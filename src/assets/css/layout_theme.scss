@@ -1,0 +1,45 @@
+//侧边栏的样式
+.layout-theme-container-aside{
+    width: $menu-side;
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    background: $main_color;
+    position: relative;
+  .el-menu,.el-menu-item{
+    background-color: $main_color;
+    border: 0;
+  }
+  .el-submenu__title, .el-submenu__title i,.el-menu,.el-menu-item,.el-menu-item i{
+    color: $theme-aside-item-color;
+  }
+  .el-submenu__title:hover ,.el-menu-item.is-active,.el-menu-item:focus, .el-menu-item:hover{
+    background-color: $theme-aside-item-color-active;
+  }
+
+  .layout-theme-container-aside-menu{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+  &::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width : 10px;  /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+  }
+  &::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 10px;
+  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background   : #1d334f;
+  }
+  &::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+  // border-radius: 10px;
+  background   : #fff;
+  }
+  }
+}

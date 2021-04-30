@@ -29,7 +29,9 @@
         </ul>
     </div>
     <keep-alive>
+      <div class="content">
       <router-view></router-view>
+      </div>
     </keep-alive>
   </div>
 </template>
@@ -47,8 +49,13 @@ export default {
 </script>
 
 <style lang='scss'>
+$header-height: 80px;
+.content{
+  height: calc(100% - #{$header-height});
+  position: relative;
+}
 .main{
-  min-height: 1080px;
+  height: 100%;
   min-width: 1920px;
 }
 @keyframes navmove
@@ -59,11 +66,11 @@ to {left:0;}
 .header{
   width: 100%;
   background: rgb(0, 0, 0);
-  height: 80px;
+  height: $header-height;
   position: relative;
   &-left{
     width:  35%;
-    height: 80px;
+    height: $header-height;
     position:absolute;
     background: url('../../assets/img/hl.png') no-repeat;
     background-size: 100% 72px;
