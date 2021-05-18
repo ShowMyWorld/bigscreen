@@ -24,11 +24,13 @@ const routes=[
                 path: '/commercial/home',
                 name: 'home',
                 component: () => import('@/views/commercial/sys/home/home.vue'),
+                meta:{name:'首页'}
               },
               {
                 path: '/commercial/bill',
                 name: 'bill',
                 component: () => import('@/views/commercial/sys/bill/bill.vue'),
+                meta:{name:'账单'}
               }
             ]
         },
@@ -69,7 +71,8 @@ const router = new VueRouter({
 router.afterEach(to => {
   const app = router.app
   const { name, params, query } = to
-  console.log(app.$store)
   app.$store.dispatch("page/open", { name, params, query })
 })
 export default router
+
+export const frameInRoutes = routes

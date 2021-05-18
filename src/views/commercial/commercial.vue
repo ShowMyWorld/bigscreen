@@ -14,9 +14,10 @@
             <el-menu
             @select="handleMenuSelect"
             :unique-opened=unique
-            :default-active=active
+            :default-active='active'
             active-text-color="#fff"
             :router=router
+            ref='menu'
             >
               <el-menu-item index="/commercial/home">
                 <i class="el-icon-location"></i>
@@ -61,22 +62,26 @@
         <div class="layout-theme-container-main">
           <div class="theme-container-main-header" >
               <el-tabs 
-                v-model="editableTabsValue" 
+               
+                :value="current"
                 type="card" 
                 :closable="true" 
-                @edit="handleTabsEdit">
+                @edit="handleTabsEdit"
+                @tab-click="handleClick">
               <el-tab-pane
-                :key="item.name"
-                v-for="(item) in editableTabs"
-                :label="item.title"
+                 v-for="(item,index) in opened"
+                :key="index"
+                :label="item.meta.name || '未命名'"
                 :name="item.name"
               >
-                {{item.content}}
+              
               </el-tab-pane>
             </el-tabs>
           </div>
           <div class="theme-container-main-body">
+            <keep-alive>
             <router-view></router-view>
+            </keep-alive>
           </div>
           
         </div>
@@ -87,30 +92,24 @@
 
 <script>
 //import BScroll from 'better-scroll'
+import { mapState } from 'vuex'
 export default {
     data(){
       return{
         unique:true,
         router:true,
-        active:'/commercial/home',
-        editableTabsValue: '2',//选中选项卡的 name
-        editableTabs: [{
-          title: 'Tab 1',
-          name: '1',
-          content: 'Tab 1 content'
-        }, {
-          title: 'Tab 2',
-          name: '2',
-          content: 'Tab 2 content'
-        }],
-        tabIndex: 2
+        active: '',
       }
     },
-    created() {
-     
+    computed: {
+      ...mapState({
+        opened:state=>state.page.opened,
+        current:state=>state.page.current
+      })
+
     },
     mounted(){
-    
+      console.log(this. opened);
       //  this.BS = new BScroll(this.$refs.aside, {
       //   mouseWheel: true
       //   // 如果你愿意可以打开显示滚动条
@@ -120,17 +119,52 @@ export default {
       //   // }
       // })
     },
+    
      watch: {
-       
+        // 监听路由 控制侧边栏激活状态
+    '$route.matched': {
+      handler (val) {
+        console.log(val);
+        this.active = val[val.length - 1].path
+        this.$nextTick(() => {
+            this.$refs.menu.activeIndex = this.active
+        })
+      },
+      immediate: true
+    }
+      //  $route: function (to) { 
+     
+        
+      // }
      },
     methods:{
       handleMenuSelect(key, keyPath) {
         console.log(key, keyPath);
       },
-      handleTabsEdit(targetName, action) {
-         console.log(targetName, action);
+
+       /**
+       * @description 接收点击 tab 标签的事件
+       */
+      handleClick (tab) {
+        // 找到点击的页面在 tag 列表里是哪个
+        const page = this.opened.find(page => page.name === tab.name)
+        const { name, params, query } = page
+        if (page) {
+          this.$router.push({ name, params, query })
+        }
+      },
+      /**
+       * @description 点击 tab 上的删除按钮触发这里 首页的删除按钮已经隐藏 因此这里不用判断是 index
+       */
+      handleTabsEdit (tagName, action) {
+        if (action === 'remove') {
+          this.close({
+            tagName,
+            vm: this
+          })
+        }
       }
-     
+   
     }
     
 }
