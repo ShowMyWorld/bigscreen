@@ -124,7 +124,6 @@ export default {
         // 监听路由 控制侧边栏激活状态
     '$route.matched': {
       handler (val) {
-        console.log(val);
         this.active = val[val.length - 1].path
         this.$nextTick(() => {
             this.$refs.menu.activeIndex = this.active

@@ -7,7 +7,7 @@ import VueParticles from 'vue-particles'
 import 'element-ui/lib/theme-chalk/index.css';
 import Vcom from './components'
 import './assets/icon/iconfont.css'
-import {frameInRoutes} from './router'
+import {frameInRoutes} from '@/router/routes'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
